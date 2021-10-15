@@ -126,6 +126,57 @@ class FFNN(ABC):
         )
         plt.show()
 
+    def plot_training_results(self, X_train, Y_train):
+        """Plot testing results."""
+        X_t = torch.FloatTensor(X_train).to(device=self.device)
+        y_hat_train = self.predict(X_t)
+        y_hat_train_class = np.where(y_hat_train < 0.5, 0, 1)
+
+        # Plot the decision boundary
+        # Determine grid range in x and y directions
+        x_min, x_max = X_train[:, 0].min() - 0.1, X_train[:, 0].max() + 0.1
+        y_min, y_max = X_train[:, 1].min() - 0.1, X_train[:, 1].max() + 0.1
+
+        # Set grid spacing parameter
+        spacing = min(x_max - x_min, y_max - y_min) / 100
+
+        # Create grid
+        XX, YY = np.meshgrid(
+            np.arange(x_min, x_max, spacing), np.arange(y_min, y_max, spacing)
+        )
+
+        # Concatenate data to match input
+        data = np.hstack(
+            (
+                XX.ravel().reshape(-1, 1),
+                YY.ravel().reshape(-1, 1),
+            )
+        )
+
+        # Pass data to predict method
+        data_t = torch.FloatTensor(data).to(device=self.device)
+        db_prob = self.predict(data_t)
+
+        clf = np.where(db_prob < 0.5, 0, 1)
+
+        Z = clf.reshape(XX.shape)
+
+        print(
+            "Training Accuracy {:.2f}%".format(
+                self.calculate_accuracy(y_hat_train_class, Y_train) * 100
+            )
+        )
+
+        plt.figure(figsize=(12, 8))
+        plt.contourf(XX, YY, Z, cmap=plt.cm.RdYlBu, alpha=0.5)
+        plt.scatter(
+            X_train[:, 0],
+            X_train[:, 1],
+            c=Y_train,
+            cmap=plt.cm.RdYlBu,
+        )
+        plt.show()
+
 
 class BinaryLinear(FFNN):
     """Linear FFNN for binary classification."""
@@ -156,6 +207,10 @@ def main():
     X, Y = gen_xor(500)
     Y = Y.reshape(-1, 1)
 
+    for y in np.unique(Y):
+        plt.plot(X[Y[:, 0] == y, 0], X[Y[:, 0] == y, 1], "o")
+    plt.show()
+
     # Split into test and training data
     X_train, X_test, Y_train, Y_test = train_test_split(
         X,
@@ -165,8 +220,22 @@ def main():
 
     net = BinaryLinear(n_dims)
     net.train(X_train, Y_train)
+    print("The training loss and accuracy progress")
     net.plot_training_progress()
+
+    print("The training accuracy results:")
+    net.plot_training_results(X_train, Y_train)
+
+    print("The testing accuracy results:")
     net.plot_testing_results(X_test, Y_test)
+
+    for i in net.net.named_parameters():
+        print(i)
+        pass
+
+    predictions = net.predict(torch.FloatTensor(X_test))
+    print("The prediction vector is:")
+    print(predictions)
 
 
 if __name__ == "__main__":
