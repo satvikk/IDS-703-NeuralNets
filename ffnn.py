@@ -237,6 +237,8 @@ def main():
     predictions = net.predict(torch.FloatTensor(X_test))
     print("The prediction vector is:")
     print(predictions)
+    predictions = predictions.detach().numpy()
+    np.savetxt("predictions_torch.txt", predictions)
 
 
 if __name__ == "__main__":
