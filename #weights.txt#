@@ -1,0 +1,12 @@
+('0.weight', Parameter containing:
+tensor([[-4.3453,  3.8208],
+        [-3.5128, -1.5427],
+        [-3.8401, -1.6261],
+        [ 1.0570,  3.6128],
+        [-3.3276, -1.4877]], requires_grad=True))
+('0.bias', Parameter containing:
+tensor([-0.5695,  2.0158,  2.1591, -1.8096,  1.8980], requires_grad=True))
+('2.weight', Parameter containing:
+tensor([[ 3.9892, -2.0261, -2.3994, -3.5164, -1.8998]], requires_grad=True))
+('2.bias', Parameter containing:
+tensor([3.6707], requires_grad=True))

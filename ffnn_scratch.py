@@ -1,4 +1,4 @@
-# Satvikk, DeekshitaS
+# SatvikkK, DeekshitaS
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,10 +11,28 @@ def calculate_accuracy(y_hat_class, Y):
     return np.sum(Y.reshape(-1, 1) == y_hat_class) / len(Y)
 
 
-# TODO
-def predict():
-    pass
+('0.bias', Parameter containing:
+tensor(, requires_grad=True))
+('2.weight', Parameter containing:
+tensor(, requires_grad=True))
+('2.bias', Parameter containing:
+tensor(, requires_grad=True))
 
+# TODO
+def predict(X):
+    weight_layer1 = np.array([[-0.0335, -0.1838],
+        [ 0.9810, -3.5658],
+        [-4.8229,  1.6182],
+        [-4.5253, -3.7302],
+        [-0.0601, -0.5431]])
+    bias_layer1 = np.array([-0.1844,  1.4693,  1.5449,  2.8962, -0.3810])
+    weight_layer2 = np.array([[ 0.1817,  3.8994,  3.8091, -4.8408,  0.1390]])
+    bias_layer2 = np.array([-3.5576])
+    output = X @ weight_layer1.T + bias_layer1.reshape(1,5)
+    output[output<0] = 0
+    output = output @ weight_layer2.T + bias_layer2.reshape(1,1)
+    output = 1 / (1 + np.exp(-output))
+    return output
 
 def plot_results(X, Y):
     """Plot testing results."""
