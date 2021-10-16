@@ -217,6 +217,7 @@ def main():
         X,
         Y,
         test_size=0.25,
+        random_state  = 11221
     )
 
     net = BinaryLinear(n_dims)
