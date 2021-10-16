@@ -204,6 +204,7 @@ def main():
     # X, Y = gen_simple(400)
 
     np.random.seed(8776)
+    torch.manual_seed(6563)
     X, Y = gen_xor(500)
     Y = Y.reshape(-1, 1)
 
