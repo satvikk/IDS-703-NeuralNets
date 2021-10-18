@@ -2,6 +2,9 @@
 
 Patrick Wang, 2021
 """
+
+# hw_Feed-forward Neural Networks | Q1 | Submitted by Satvik Kishore, Deekshita Saikia
+
 from abc import ABC
 
 import matplotlib.pyplot as plt
@@ -213,11 +216,9 @@ def main():
     plt.show()
 
     # Split into test and training data
+    # Added random seed to generate same test data for comparison
     X_train, X_test, Y_train, Y_test = train_test_split(
-        X,
-        Y,
-        test_size=0.25,
-        random_state  = 11221
+        X, Y, test_size=0.25, random_state=11221
     )
 
     net = BinaryLinear(n_dims)
